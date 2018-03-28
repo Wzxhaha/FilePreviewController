@@ -25,11 +25,11 @@ class ViewController: UIViewController {
     private func generateFileItems() {
         //jpg
         let url = URL(string: jpg)
-        let jpgItem = FilePreviewItem(previewItemURL: url!, previewItemTitle: "Good Good File/Good File.jpg", fileExtension: "jpg", fileKey: "0013b1f8a28f28755112197a1f57a2fc89ba")
+        let jpgItem = FilePreviewItem(previewItemURL: url, previewItemTitle: "Good Good File/Good File.jpg", fileExtension: "jpg", fileKey: "0013b1f8a28f28755112197a1f57a2fc89ba")
         
         // pdf
-        let mp3 = URL(string: "https://devstreaming-cdn.apple.com/videos/wwdc/2017/102xyar2647hak3e/102/102_platforms_state_of_the_union.pdf")
-        let pdfItem = FilePreviewItem(previewItemURL: mp3!, previewItemTitle: "Platforms State of the Union ehfejrfbrefjhebfh.pdf", fileExtension: "pdf", fileKey: "130tb7d3d6f287ae7ef1d40eec2f68175d89")
+        let pdf = URL(string: "https://devstreaming-cdn.apple.com/videos/wwdc/2017/102xyar2647hak3e/102/102_platforms_state_of_the_union.pdf")
+        let pdfItem = FilePreviewItem(previewItemURL: pdf, previewItemTitle: "Platforms State of the Union ehfejrfbrefjhebfh.pdf", fileExtension: "pdf", fileKey: "130tb7d3d6f287ae7ef1d40eec2f68175d89")
         
         // video
         let mov = URL(string: "https://www.teambition.com/api/works/59ba602a4b84a74b543216bd/download/bug-%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%E6%9B%B4%E5%A4%9A%E6%8C%89%E9%92%AE%E7%82%B9%E5%87%BB%E4%B8%A4%E6%AC%A1.mov?signature=eyJhbGciOiJIUzI1NiJ9.eyJfd29ya0lkIjoiNTliYTYwMmE0Yjg0YTc0YjU0MzIxNmJkIiwiZmlsZUtleSI6IjEzMHczYjQwZTQ4ZTVhOTk2Y2M0Njg2Y2ViZTVlMTMzNjA5MSIsIl91c2VySWQiOiI1NDI1NDJmZjg4MmE2YzcwMGJiOTMwNmIiLCJleHAiOjE1MjE2OTk1ODksInN0b3JhZ2UiOiJzdHJpa2VyLWh6In0.WFlO0NaiutXir52iZV8O5FJHeHhXrLVXsJ26SX4lDxI")!
@@ -50,7 +50,7 @@ class ViewController: UIViewController {
         
         // zip
         let zip = URL(string: "https://www.teambition.com/api/works/5a98ff5eab009e03ff272e3a/download/%E6%96%B0%E5%9E%8B%E6%8A%A5%E5%91%8A.zip?signature=eyJhbGciOiJIUzI1NiJ9.eyJfd29ya0lkIjoiNWE5OGZmNWVhYjAwOWUwM2ZmMjcyZTNhIiwiZmlsZUtleSI6IjEwMTJjMmRmYjhmNmNjNWUwYjI0OWU4NjUyZjAwNThkNDdkNiIsIl91c2VySWQiOiI1NDI1NDJmZjg4MmE2YzcwMGJiOTMwNmIiLCJleHAiOjE1MjE2ODc3ODIsInN0b3JhZ2UiOiJzdHJpa2VyLWh6In0.eTy6-UQ-Mi4nnuXbwCGEkdsju12fEPuQzBB28KTghn0")
-        let zipItem = FilePreviewItem(previewItemURL: zip!, previewItemTitle: "新型报告.zip", fileExtension: "zip", fileKey: "0013b1f8a28f28755112197a1f57a2fca89b")
+        let zipItem = FilePreviewItem(previewItemURL: zip, previewItemTitle: "新型报告.zip", fileExtension: "zip", fileKey: "0013b1f8a28f28755112197a1f57a2fca89b")
         
         fileItems = [jpgItem, pdfItem, keyItem, excelItem, vedioItem, mp4Item, zipItem]
     }
@@ -106,6 +106,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         singleFilePreviewController.isEnableShare = true
         //singleFilePreviewController.actionItems = [item1, item2]
         singleFilePreviewController.controllerDelegate = self
+        singleFilePreviewController.add([item1, item2])
         let navigation = UINavigationController(rootViewController: singleFilePreviewController)
         presentFilePreviewController(viewControllerToPresent: navigation, fromView: cell.imageView)
         

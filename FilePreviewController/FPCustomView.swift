@@ -18,7 +18,10 @@ open class GradientToolbar: UIToolbar {
         clipsToBounds = true
         addSubview(gradientView)
         gradientView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        gradientView.colors = [UIColor.black.withAlphaComponent(0.48).cgColor, UIColor.black.withAlphaComponent(0).cgColor]
+        gradientView.colors = [
+            UIColor.black.withAlphaComponent(0.48).cgColor,
+            UIColor.black.withAlphaComponent(0).cgColor
+        ]
         gradientView.startPoint = CGPoint(x: 0, y: 1)
         gradientView.endPoint = CGPoint(x: 0, y: 0)
     }

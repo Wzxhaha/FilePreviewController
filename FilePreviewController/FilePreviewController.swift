@@ -10,29 +10,29 @@ import Foundation
 import QuickLook
 import Alamofire
 import UIKit
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
-
 public struct FilePreviewControllerConstants {
-   public static let filePathComponent = "com.teambition.RemoteQuickLook"
+    public static let filePathComponent = "com.teambition.RemoteQuickLook"
 }
 
 public extension String {
@@ -127,11 +127,13 @@ open class FilePreviewController: QLPreviewController {
             toolbarItems = actionItems.map { $0.barButtonItem }
         }
     }
+    
     override open var toolbarItems: [UIBarButtonItem]? {
         didSet {
             items = toolbarItems
         }
     }
+    
     open var items: [UIBarButtonItem]?
     fileprivate lazy var bottomProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
@@ -140,10 +142,9 @@ open class FilePreviewController: QLPreviewController {
         progressView.tintColor = UIColor.blue
         return progressView
     }()
+    
     fileprivate var shouldDisplayToolbar: Bool {
-        get {
-            return items?.count > 0
-        }
+        return items?.count > 0
     }
 
     lazy var navigationBar: UINavigationBar? = {
@@ -177,17 +178,20 @@ open class FilePreviewController: QLPreviewController {
         bar?.tintColor = UIColor.white
         return bar
     }()
+    
     var customNavigationBar: UIView?
     lazy var leftBarButtonItem: UIBarButtonItem = {
         let crossImage = UIImage(named: "icon-cross", in: Bundle.init(for: FilePreviewController.self), compatibleWith: nil)
         return UIBarButtonItem(image: crossImage, style: .plain, target: self, action: #selector(dismissSelf))
     }()
+    
     lazy var shareBarButtonItem: UIBarButtonItem = {
         let shareImage = UIImage(named: "icon-share", in: Bundle.init(for: FilePreviewController.self), compatibleWith: nil)
         let item = UIBarButtonItem(image: shareImage, style: .plain, target: self, action: #selector(showShareActivity))
         item.isEnabled = false
         return item
     }()
+    
     lazy var moreBarButtonItem: UIBarButtonItem = {
         let moreImage = UIImage(named: "moreIcon", in: Bundle.init(for: FilePreviewController.self), compatibleWith: nil)
         let item = UIBarButtonItem(image: moreImage, style: .plain, target: self, action: #selector(showMoreActivity))
@@ -296,7 +300,9 @@ open class FilePreviewController: QLPreviewController {
     }
     
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if context == &myContext, let keyPath = keyPath , keyPath == "center", let object = object as? UINavigationBar , object == navigationBar {
+        guard context == &myContext, let keyPath = keyPath else { return }
+        
+        if keyPath == "center", let object = object as? UINavigationBar , object == navigationBar {
             if let change = change {
                 if let new = change[NSKeyValueChangeKey.newKey] as? NSValue {
                     let point = new.cgPointValue
@@ -464,8 +470,8 @@ extension FilePreviewController {
         }
         UIView.animate(withDuration: 0.5, animations: { () -> Void in
             progressBar.alpha = 0
-            }, completion: { (_) -> Void in
-                progressBar.removeFromSuperview()
+        }, completion: { (_) -> Void in
+            progressBar.removeFromSuperview()
         })
     }
     
@@ -489,10 +495,12 @@ extension FilePreviewController {
             toolbar = UIToolbar()
             if let toolbar = toolbar {
                 view.addSubview(toolbar)
+                // Fixed position issues caused by hot port or iPhoneX
+                let offset: CGFloat = UIApplication.shared.statusBarFrame.height > 20 ? 20 : 0
                 toolbar.translatesAutoresizingMaskIntoConstraints = false
-                view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[toolbar]-0-|", options: [], metrics: nil , views: ["toolbar":toolbar]))
+                view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[toolbar]-0-|", options: [], metrics: nil , views: ["toolbar": toolbar]))
                 toolbar.addConstraint(NSLayoutConstraint(item: toolbar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: customToolbarHeight))
-                toolbarBottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: toolbar, attribute: .top, multiplier: 1.0, constant: toolbarBackgroundHeight)
+                toolbarBottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: toolbar, attribute: .top, multiplier: 1.0, constant: customToolbarHeight + offset)
                 view.addConstraint(toolbarBottomConstraint!)
             }
             
@@ -500,6 +508,7 @@ extension FilePreviewController {
                 toolbarBottomConstraint?.constant = 0
                 return
             }
+            
             let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
             let fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
             fixedSpace.width = 72
@@ -541,7 +550,7 @@ extension FilePreviewController {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { (_) -> Void in
             self.layoutProgressBar()
-            }, completion: nil)
+        }, completion: nil)
     }
 }
 

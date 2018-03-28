@@ -47,7 +47,17 @@ public extension FilePreviewController {
     func addActionBarItem(title: String?, style: UIBarButtonItemStyle, action: BarActionClosure?) {
         let barItem = FPActionBarItem(title: title, style: style, action: action)
         barItem.filePreviewController = self
+        add(barItem)
+    }
+    
+    func add(_ actionBarItem: FPActionBarItem) {
+        let barItem = actionBarItem
+        barItem.filePreviewController = self
         actionItems.append(barItem)
+    }
+    
+    func add(_ actionBarItems: [FPActionBarItem]) {
+        actionBarItems.forEach { add($0) }
     }
     
     func insert(_ actionBarItem: FPActionBarItem, at index: Int) {

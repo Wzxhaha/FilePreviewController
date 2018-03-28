@@ -41,6 +41,6 @@ class SingleItemDataSource: NSObject, QLPreviewControllerDataSource {
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return previewItem!
+        return previewItem
     }
 }

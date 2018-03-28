@@ -8,9 +8,9 @@
 
 import Foundation
 
-let PresentDuration = 0.4
-let DismissDuration = 0.3
-var AssociatedObjectHandle: UInt8 = 0
+fileprivate let PresentDuration = 0.4
+fileprivate let DismissDuration = 0.3
+fileprivate var AssociatedObjectHandle: UInt8 = 0
 
 public extension UIViewController {
     public func presentFilePreviewController(viewControllerToPresent controller: UIViewController, fromView: UIView?) {
